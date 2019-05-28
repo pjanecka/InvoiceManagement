@@ -1,0 +1,104 @@
+﻿@model InvoiceManagement.Models.Invoice
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Invoice</h4>
+<hr />
+<div class="row">
+    <div>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Company" class="control-label"></label>
+                <input asp-for="Company" class="form-control" />
+                <span asp-validation-for="Company" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BillTo" class="control-label"></label>
+                <input asp-for="BillTo" class="form-control" />
+                <span asp-validation-for="BillTo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Items" class="control-label"></label>
+                <table id="item-table" class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Items[0].Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Items[0].Price)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Items[0].Quantity)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Items.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    <input asp-for="Items[i].Id" type="hidden" />
+                                    <input asp-for="Items[i].Name" class="form-control" />
+                                    <span asp-validation-for="Items[i].Name" class="text-danger"></span>
+                                </td>
+                                <td>
+                                    <input asp-for="Items[i].Price" class="form-control" />
+                                    <span asp-validation-for="Items[i].Price" class="text-danger"></span>
+                                </td>
+                                <td>
+                                    <input asp-for="Items[i].Quantity" class="form-control" />
+                                    <span asp-validation-for="Items[i].Quantity" class="text-danger"></span>
+                                </td>
+                                <td>
+                                    <a asp-action="DeleteItem" asp-route-invoiceId="@Model.Id" asp-route-itemId="@Model.Items[i].Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td colspan="4">
+                                <a asp-action="AddItem" asp-route-invoiceId="@Model.Id">Add Item</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <span asp-validation-for="Items" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Paid" /> @Html.DisplayNameFor(model => model.Paid)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
